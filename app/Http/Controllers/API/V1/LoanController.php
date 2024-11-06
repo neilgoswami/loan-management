@@ -56,7 +56,32 @@ class LoanController extends Controller
      */
     public function update(UpdateLoanRequest $request, string $id)
     {
-        //
+        try {
+            $loan = Loan::find($id);
+
+            $fields = [
+                'loanAmount' => 'loan_amount',
+                'interestRate' => 'interest_rate',
+                'loanDuration' => 'loan_duration'
+            ];
+            
+            $attributes = [];
+            
+            foreach ($fields as $inputKey => $attributeKey) {
+                $fullKey = "data.attributes.$inputKey";
+                if ($request->has($fullKey)) {
+                    $attributes[$attributeKey] = $request->input($fullKey);
+                }
+            }
+            $loan->update($attributes);
+
+            return new LoanResource($loan);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Loan cannot be found.',
+                'status' => 404
+            ], 404);
+        }
     }
 
     /**
