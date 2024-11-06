@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\StoreLoanRequest;
 use App\Http\Requests\API\V1\UpdateLoanRequest;
+use App\Http\Resources\V1\LoanResource;
 use App\Models\Loan;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,15 @@ class LoanController extends Controller
      */
     public function index()
     {
-        return response()->json(Loan::all(), 200);
+        return LoanResource::collection(Loan::paginate());
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Loan $loan)
+    {
+        return new LoanResource($loan);
     }
 
     /**
