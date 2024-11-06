@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\API\V1;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Api\V1\BaseLoanRequest;
 
-class UpdateLoanRequest extends FormRequest
+class UpdateLoanRequest extends BaseLoanRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class UpdateLoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'loan_amount' => 'numeric|min:0',
-            'interest_rate' => 'numeric|min:0|max:100',
-            'loan_duration' => 'integer|min:1',
+            'data.attributes.loanAmount' => 'numeric|min:0',
+            'data.attributes.interestRate' => 'numeric|min:0|max:100',
+            'data.attributes.loanDuration' => 'integer|min:1',
         ];
     }
 }

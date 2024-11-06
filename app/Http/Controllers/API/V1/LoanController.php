@@ -42,13 +42,7 @@ class LoanController extends Controller
      */
     public function store(StoreLoanRequest $request)
     {
-        $model = [
-            'loan_amount' => $request->input('data.attributes.loanAmount'),
-            'interest_rate' => $request->input('data.attributes.interestRate'),
-            'loan_duration' => $request->input('data.attributes.loanDuration'),
-        ];
-
-        return new LoanResource(Loan::create($model));
+        return new LoanResource(Loan::create($request->mappedAttributes()));
     }
 
     /**
@@ -58,22 +52,7 @@ class LoanController extends Controller
     {
         try {
             $loan = Loan::find($id);
-
-            $fields = [
-                'loanAmount' => 'loan_amount',
-                'interestRate' => 'interest_rate',
-                'loanDuration' => 'loan_duration'
-            ];
-            
-            $attributes = [];
-            
-            foreach ($fields as $inputKey => $attributeKey) {
-                $fullKey = "data.attributes.$inputKey";
-                if ($request->has($fullKey)) {
-                    $attributes[$attributeKey] = $request->input($fullKey);
-                }
-            }
-            $loan->update($attributes);
+            $loan->update($request->mappedAttributes());
 
             return new LoanResource($loan);
         } catch (ModelNotFoundException $e) {
