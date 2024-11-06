@@ -23,9 +23,18 @@ class LoanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Loan $loan)
+    public function show($id)
     {
-        return new LoanResource($loan);
+        try {
+            $loan = Loan::findOrFail($id);
+
+            return new LoanResource($loan);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Loan cannot be found.',
+                'status' => 404
+            ], 404);
+        }
     }
 
     /**
