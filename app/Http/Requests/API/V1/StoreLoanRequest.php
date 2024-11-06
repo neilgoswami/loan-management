@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\API\V1;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Api\V1\BaseLoanRequest;
 
-class StoreLoanRequest extends FormRequest
+class StoreLoanRequest extends BaseLoanRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +25,6 @@ class StoreLoanRequest extends FormRequest
             'data.attributes.loanAmount' => 'required|numeric|min:0',
             'data.attributes.interestRate' => 'required|numeric|min:0|max:100',
             'data.attributes.loanDuration' => 'required|integer|min:1',
-        ];
-    }
-
-    public function messages(): array {
-        return [
-            'data.attributes.loanAmount' => 'The data.attributes.loanAmount field is required.',
-            'data.attributes.interestRate' => 'The data.attributes.interestRate field is required.',
-            'data.attributes.loanDuration' => 'The data.attributes.loanDuration field is required.',
         ];
     }
 }

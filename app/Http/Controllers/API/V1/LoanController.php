@@ -42,13 +42,7 @@ class LoanController extends Controller
      */
     public function store(StoreLoanRequest $request)
     {
-        $model = [
-            'loan_amount' => $request->input('data.attributes.loanAmount'),
-            'interest_rate' => $request->input('data.attributes.interestRate'),
-            'loan_duration' => $request->input('data.attributes.loanDuration'),
-        ];
-
-        return new LoanResource(Loan::create($model));
+        return new LoanResource(Loan::create($request->mappedAttributes()));
     }
 
     /**
@@ -56,7 +50,17 @@ class LoanController extends Controller
      */
     public function update(UpdateLoanRequest $request, string $id)
     {
-        //
+        try {
+            $loan = Loan::find($id);
+            $loan->update($request->mappedAttributes());
+
+            return new LoanResource($loan);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Loan cannot be found.',
+                'status' => 404
+            ], 404);
+        }
     }
 
     /**
