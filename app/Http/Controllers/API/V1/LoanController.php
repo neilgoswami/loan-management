@@ -30,15 +30,21 @@ class LoanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLoanRequest $storeLoanRequest)
+    public function store(StoreLoanRequest $request)
     {
-        //
+        $model = [
+            'loan_amount' => $request->input('data.attributes.loanAmount'),
+            'interest_rate' => $request->input('data.attributes.interestRate'),
+            'loan_duration' => $request->input('data.attributes.loanDuration'),
+        ];
+
+        return new LoanResource(Loan::create($model));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLoanRequest $updateLoanRequest, string $id)
+    public function update(UpdateLoanRequest $request, string $id)
     {
         //
     }

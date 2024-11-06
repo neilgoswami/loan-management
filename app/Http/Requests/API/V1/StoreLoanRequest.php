@@ -22,9 +22,17 @@ class StoreLoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'loan_amount' => 'required|numeric|min:0',
-            'interest_rate' => 'required|numeric|min:0|max:100',
-            'loan_duration' => 'required|integer|min:1',
+            'data.attributes.loanAmount' => 'required|numeric|min:0',
+            'data.attributes.interestRate' => 'required|numeric|min:0|max:100',
+            'data.attributes.loanDuration' => 'required|integer|min:1',
+        ];
+    }
+
+    public function messages(): array {
+        return [
+            'data.attributes.loanAmount' => 'The data.attributes.loanAmount field is required.',
+            'data.attributes.interestRate' => 'The data.attributes.interestRate field is required.',
+            'data.attributes.loanDuration' => 'The data.attributes.loanDuration field is required.',
         ];
     }
 }
