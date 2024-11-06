@@ -7,6 +7,7 @@ use App\Http\Requests\API\V1\StoreLoanRequest;
 use App\Http\Requests\API\V1\UpdateLoanRequest;
 use App\Http\Resources\V1\LoanResource;
 use App\Models\Loan;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class LoanController extends Controller
@@ -54,6 +55,19 @@ class LoanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $loan = Loan::findOrfail($id);
+            $loan->delete();
+
+            return response()->json([
+                'message' => 'Loan successfully deleted.',
+                'status' => 200
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Loan cannot be found.',
+                'status' => 404
+            ], 404);
+        }
     }
 }
