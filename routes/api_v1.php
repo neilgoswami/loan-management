@@ -3,4 +3,4 @@
 use App\Http\Controllers\API\V1\LoanController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('loans', LoanController::class);
+Route::middleware('auth:sanctum')->apiResource('loans', LoanController::class);
