@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Loan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase as TestsTestCase;
@@ -60,7 +61,7 @@ class LoanTest extends TestsTestCase
         $this->authenticateUser();
 
         // Create a loan manually for update
-        $loan = \App\Models\Loan::factory()->create([
+        $loan = Loan::factory()->create([
             'loan_amount' => 9000,
             'interest_rate' => 19.99,
             'loan_duration' => 12,
@@ -81,5 +82,30 @@ class LoanTest extends TestsTestCase
         // Confirm the database reflects the updated loan data and missing old
         $this->assertDatabaseHas('loans', ['interest_rate' => 14.99])
             ->assertDatabaseMissing('loans', ['interest_rate' => 19.99]);
+    }
+
+    /**
+     * Test deleting an existing loan.
+     */
+    public function test_delete_loan(): void
+    {
+        // Authenticate user
+        $this->authenticateUser();
+
+        // Create a loan manually for delete
+        $loan = Loan::factory()->create([
+            'loan_amount' => 9000,
+            'interest_rate' => 19.99,
+            'loan_duration' => 12,
+        ]);
+
+        // Send DELETE request to delete the loan
+        $response = $this->deleteJson("/api/v1/loans/{$loan->id}");
+
+        // Assert the response status is 200
+        $response->assertStatus(200);
+
+        // Verify the loan no longer exists in the database
+        $this->assertDatabaseMissing('loans', ['id' => $loan->id]);
     }
 }
