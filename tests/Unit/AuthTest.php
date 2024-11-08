@@ -7,14 +7,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase as TestsTestCase;
 
-class UserTest extends TestsTestCase
+class AuthTest extends TestsTestCase
 {
     use RefreshDatabase;
 
     /**
      * Test the user login functionality.
      */
-    public function test_user_login(): void
+    public function test_login(): void
     {
         // Create a user manually for login
         $user = User::factory()->create([
