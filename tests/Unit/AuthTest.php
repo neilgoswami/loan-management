@@ -28,7 +28,7 @@ class AuthTest extends TestsTestCase
             'password' => 'password',
         ]);
 
-        // Assert the response includes a token and is successful
+        // Assert the response status is 200
         $response->assertStatus(200);
     }
 
@@ -43,7 +43,7 @@ class AuthTest extends TestsTestCase
             'Authorization' => "Bearer $token"
         ])->postJson('/api/logout');
 
-        // Assert the response is successful and the message is as expected
+        // Assert the response status is 200
         $response->assertStatus(200);
     }
 }
