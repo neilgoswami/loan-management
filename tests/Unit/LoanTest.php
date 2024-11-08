@@ -27,6 +27,38 @@ class LoanTest extends TestsTestCase
     }
 
     /**
+     * Test retrieving the list of loans.
+     */
+    public function test_list_loans(): void
+    {
+        // Authenticate user
+        $this->authenticateUser();
+
+        // Create loans manually to retrieve loan list
+        Loan::factory()->count(5)->create();
+
+        $response = $this->getJson('/api/v1/loans');
+
+        // Send GET request to retrieve the loans list
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'type',
+                        'id',
+                        'attributes',
+                        'links'
+                    ]
+                ],
+                'links',
+                'meta'
+            ]);
+
+        // Assert that there are exactly 5 loans in the "data" array
+        $response->assertJsonCount(5, 'data');
+    }
+
+    /**
      * Test creating a loan.
      */
     public function test_create_loan(): void
