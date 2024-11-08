@@ -41,7 +41,7 @@ class UserTest extends TestsTestCase
         // Use the generated token in the request header to logout
         $response = $this->withHeaders([
             'Authorization' => "Bearer $token"
-        ])->getJson('/api/logout');
+        ])->postJson('/api/logout');
 
         // Assert the response is successful and the message is as expected
         $response->assertStatus(200);
