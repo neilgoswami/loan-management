@@ -51,7 +51,8 @@ class LoanController extends Controller
     public function update(UpdateLoanRequest $request, string $id)
     {
         try {
-            $loan = Loan::find($id);
+            $loan = Loan::findOrFail($id);
+
             $loan->update($request->mappedAttributes());
 
             return new LoanResource($loan);
