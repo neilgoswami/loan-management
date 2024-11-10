@@ -12,6 +12,8 @@ class BaseLoanRequest extends FormRequest
       'data.attributes.loanAmount' => 'loan_amount',
       'data.attributes.interestRate' => 'interest_rate',
       'data.attributes.loanDuration' => 'loan_duration',
+      'data.attributes.lenderId' => 'lender_id',
+      'data.attributes.borrowerId' => 'borrower_id',
     ];
 
     $attributesToUpdate = [];

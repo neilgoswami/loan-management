@@ -25,6 +25,8 @@ class StoreLoanRequest extends BaseLoanRequest
             'data.attributes.loanAmount' => 'required|numeric|min:0',
             'data.attributes.interestRate' => 'required|numeric|min:0|max:100',
             'data.attributes.loanDuration' => 'required|integer|min:1',
+            'data.attributes.lenderId' => 'required|exists:users,id',
+            'data.attributes.borrowerId' => 'required|exists:users,id',
         ];
     }
 }
