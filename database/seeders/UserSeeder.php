@@ -14,6 +14,12 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Generate users for lenders and borrowers
+        User::factory()->create([
+            'email' => 'mayur@nedhelps.com'
+        ]);
+        User::factory()->create([
+            'email' => 'neelgoswami.cs@gmail.com'
+        ]);
         User::factory()->count(10)->create();
     }
 }
