@@ -7,8 +7,9 @@ use App\Http\Requests\API\V1\StoreLoanRequest;
 use App\Http\Requests\API\V1\UpdateLoanRequest;
 use App\Http\Resources\V1\LoanResource;
 use App\Models\Loan;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoanController extends Controller
 {
@@ -51,7 +52,13 @@ class LoanController extends Controller
     public function update(UpdateLoanRequest $request, string $id)
     {
         try {
-            $loan = Loan::find($id);
+            $loan = Loan::findOrFail($id);
+
+            // Check if the user is the lender of the loan being updated
+            if ($request->user()->cannot('update', $loan)) {
+                throw new Exception('Access denied: only the lender can update this loan.', 403);
+            }
+
             $loan->update($request->mappedAttributes());
 
             return new LoanResource($loan);
@@ -60,6 +67,11 @@ class LoanController extends Controller
                 'message' => 'Loan cannot be found.',
                 'status' => 404
             ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => $e->getCode()
+            ], $e->getCode());
         }
     }
 
@@ -70,6 +82,12 @@ class LoanController extends Controller
     {
         try {
             $loan = Loan::findOrfail($id);
+
+            // Check if the user is the lender of the loan being updated
+            if (Auth::user()->cannot('delete', $loan)) {
+                throw new Exception('Access denied: only the lender can delete this loan.', 403);
+            }
+
             $loan->delete();
 
             return response()->json([
@@ -81,6 +99,11 @@ class LoanController extends Controller
                 'message' => 'Loan cannot be found.',
                 'status' => 404
             ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => $e->getCode()
+            ], $e->getCode());
         }
     }
 }

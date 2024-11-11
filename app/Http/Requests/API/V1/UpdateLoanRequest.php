@@ -25,6 +25,8 @@ class UpdateLoanRequest extends BaseLoanRequest
             'data.attributes.loanAmount' => 'numeric|min:0',
             'data.attributes.interestRate' => 'numeric|min:0|max:100',
             'data.attributes.loanDuration' => 'integer|min:1',
+            'data.attributes.lenderId' => 'exists:users,id',
+            'data.attributes.borrowerId' => 'exists:users,id',
         ];
     }
 }
