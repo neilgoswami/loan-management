@@ -15,10 +15,7 @@ class UserSeeder extends Seeder
     {
         // Generate users for lenders and borrowers
         User::factory()->create([
-            'email' => 'mayur@nedhelps.com'
-        ]);
-        User::factory()->create([
-            'email' => 'neelgoswami.cs@gmail.com'
+            'email' => 'engineer@nedhelps.com'
         ]);
         User::factory()->count(10)->create();
     }
