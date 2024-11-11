@@ -56,8 +56,11 @@ A RESTful API for managing loans, built with PHP and Laravel. This API allows us
    ```bash
    php artisan migrate --seed
    ```
+   Seeders include a test user account with the following credentials:
+   - **Email**: engineer@nedhelps.com
+   - **Password**: password
       
-6. **Serve the application**:
+7. **Serve the application**:
    ```bash
    php artisan serve
    ```
