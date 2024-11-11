@@ -1,19 +1,24 @@
-# Loan Management System API
+# Loan Management API
 A RESTful API for managing loans, built with PHP and Laravel. This API allows users to perform CRUD operations on loan data and is secured using Laravel Sanctum for authentication.
 
 ## Tech Stack
 
-- Backend: PHP (Laravel)
-- Database: MySQL
-- Authentication: Laravel Sanctum
-- Testing: PHPUnit
+- **Backend**: Laravel 11.x (PHP)
+- **Database**: MySQL
+- **Authentication**: Laravel Sanctum for API token-based authentication
+- **Testing**: PHPUnit for unit and feature tests
 
 ## Features
 
-- User authentication with Laravel Sanctum
-- CRUD operations for managing loans
-- JSON-based responses
-- Structured, paginated, and formatted API responses
+### Phase 1
+- **User Authentication**: Basic user setup with Laravel Sanctum.
+- **Loan Management**: Users can create, view, update, and delete loans.
+- **Testing**: Basic unit and feature tests for key functionalities.
+
+### Phase 2
+- **Lender-Borrower Association**: Each loan must be associated with a lender and a borrower.
+- **Access Control**: Only the original lender can edit or delete their own loans.
+- **Public Access**: Authentication is not required for viewing loans.
 
 ## Requirements
 
@@ -48,32 +53,37 @@ A RESTful API for managing loans, built with PHP and Laravel. This API allows us
    ```
 
 5. **Run migrations and seeders**:
-    - Run database migrations:
-    - ```bash
-      php artisan migrate
-      ```
-    - Optionally, seed the database with test data:
-    - ```bash
-      # Seed the database with test users, each with a random email and a password set to "password"
-      php artisan db:seed
+   ```bash
+   php artisan migrate --seed
+   ```
       
-      # Seed the database with test loan entries specifically, using the LoanSeeder class
-      php artisan db:seed --class=LoanSeeder
-      ```
-
 6. **Serve the application**:
    ```bash
    php artisan serve
    ```
 The API should now be running at `http://127.0.0.1:8000`.
 
-## Usage
+## API Endpoints
 
-### Authentication
-Obtain an access token by logging in via the `/api/login` endpoint.
-Revoke an access token by logging out via the `/api/logout` endpoint.
-### Authorization
-Include the token in the `Authorization` header as a Bearer token when making authenticated requests:
-   ```makefile
-   Authorization: Bearer <your-token>
+| Method      | Endpoint            | Description                   | Authentication |
+|-------------|---------------------|-------------------------------|----------------|
+| POST        | /api/login          | User login                    | No             |
+| POST        | /api/logout         | User logout                   | Yes            |
+| GET         | /api/v1/loans       | Get a list of loans           | No             |
+| GET         | /api/v1/loans/{id}  | Get details of a specific loan| No             |
+| POST        | /api/v1/loans       | Create a new loan             | Yes            |
+| PUT / PATCH | /api/v1/loans/{id}  | Update a loan                 | Yes            |
+| DELETE      | /api/v1/loans/{id}  | Delete a loan                 | Yes            |
+
+## Testing
+To run tests, use the following command:
+   ```bash
+   php artisan test
    ```
+
+### Key Test Cases
+Happy Path Scenarios
+- **View Loan List**: Verify that the loan list can be accessed without authentication.
+- **Loan Creation**: Ensure a valid user can create a loan with a lender and borrower.
+- **Loan Editing**: Validate that only the original lender can update their loan details.
+- **Loan Deletion**: Confirm that only the original lender can delete their loan.
